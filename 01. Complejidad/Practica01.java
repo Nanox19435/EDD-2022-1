@@ -25,14 +25,23 @@ public class Practica01{
 		int pointer1 = 0;
 		int pointer2 = 0;
 
+		
 		for(int i = 0; i < result.length; i++) {
 			if (array1[pointer1] < array2[pointer2]) {
 				result[i] = array1[pointer1];
 				pointer1++;
+				if (pointer1 > n) {
+					result[i] = array2[pointer2];
+					pointer2++;
+				}
 			} else {
 				result[i] = array2[pointer2];
 				pointer2++;
-			}
+				if (pointer2 > m) {
+					result[i] = array1[pointer1];
+					pointer1++;
+				}
+			} 
 		} 
 		
 		/*
