@@ -29,14 +29,17 @@ public class Practica01{
 
 		
 		for(int i = 0; i < result.length; i++) {
+			//Aca, checamos que arreglo tiene el elemento menor en la posición a la que apuntamos.
 			if (array1[pointer1] < array2[pointer2]) {
 				result[i] = array1[pointer1];
 				pointer1++;
+				//Si llegamos al final del arreglo, avanzamos el otro apuntador, y de paso añadimos otro elemento al arreglo.
 				if (pointer1 > n) {
 					result[i] = array2[pointer2];
 					pointer2++;
 				}
 			} else {
+				//El proceso es homólogo al bloque anterior.
 				result[i] = array2[pointer2];
 				pointer2++;
 				if (pointer2 > m) {
@@ -56,33 +59,29 @@ public class Practica01{
 	* false en otro caso.
     */
     public static boolean isValidBoard(int[][] board){
-    	int length = board.length;
-		for (int i = 0; i < length ; i++) {
-			for (int j = 0; j < length ; j++ ) {
-				boolean verificador = false;
-				// Verifica sobre las filas
-				for(int k = 0 ; k < length; k++){
-					if(board[i][k] == j){
-						verificador = true;
-						break;
-					}
-				}
-				if(!verificador){
-					return false;
-				}
-				verificador = false;
-				// Verifica sobre las columnas
-				for(int k = 0 ; k < length; k++){
-					if(board[k][i] == j){
-						verificador = true;
-						break;
-					}
-				}
-				if(!verificador){
-					return false;
-				}
+		int length = board.length;
+
+		//La idea de este algoritmo es usar la fórmula de Gauss para la suma de los n-1 números naturales consecutivos desde 0
+		//para hallar el resultado. También, regresamos false si board contiene un número fuera del rango  [0, n-1], de esta forma,
+		//nos aseguramos que no se pueda llegar al resultado de la formula, sumando sum y n ceros. 
+		final int sum = (length*(length-1))/2;
+
+		for (int i = 0; i < board.length; i++) {
+			int column_sum = 0;
+			int row_sum = 0;
+			for (int j = 0; j < board.length; j++) {
+				//Otra optimización se da aquí, usando un único par de fors para recorrer a la vez las columnas y los renglones.
+				int k = board[i][j];
+				if (k < 0 || length <= k) return false;
+				column_sum += k;
+
+				k = board[j][i];
+				if (k < 0 || length <= k) return false;
+				row_sum += k;
 			}
+			if (row_sum != sum || column_sum != sum) return false;
 		}
+
 		return true;
 	}
 
