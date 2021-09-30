@@ -22,6 +22,8 @@ public class Practica01{
 			throw new RuntimeException("Límites no válidos");
 		
 		int[] result = new int[n + m]; 
+		//Usamos dos apuntadores para saber en que punto de ambos arreglos nos encontramos.
+		//el apuntador 1 solo se usará con el arreglo y, y el apuntador 2 con el arreglo 2.
 		int pointer1 = 0;
 		int pointer2 = 0;
 
@@ -42,25 +44,7 @@ public class Practica01{
 					pointer1++;
 				}
 			} 
-		} 
-		
-		/*
-		int pointer;
-		for(pointer = 0; pointer < n; pointer++)
-			result[pointer] = array1[pointer];
-		for(int i = 0 ; i < m ; i++, pointer++)
-			result[pointer] = array2[i];
-		
-		// Ordenamiento del arreglo result
-		for(int j = 0; j < result.length - 1; j++){
-			for(int k = j+1; k < result.length; k++){
-				if(result[k] < result[j]){
-					int aux = result[k];
-					result[k] = result[j];
-					result[j] = aux;
-				}
-			} 
-		} */
+		}
 
 		return result;
 	}
@@ -109,13 +93,22 @@ public class Practica01{
 	* @param position la cantidad de espacios a rotar.
 	*/
 	public static void rotateArray(int[] num, int position){
-		for(int i = 0; i < position ; i++){
-			int aux = num[0];
-			for(int j = 0; j < num.length -1 ; j++){
-				num[j] = num[j+1];
-			}
-			num[num.length-1] = aux;
+		//Clonamos para no perder el orden original de los datos de entrada.
+		int[] clone = num.clone();
+		for(int i = 0; i < clone.length; i++) {
+			//Utilizamos el modulo euclidiano como una función f(int) -> int que convierte
+			//un indice en el arreglo original a un indice en el arreglo rotado.
+			int index = euclidean_modulo(position + i, clone.length);
+			num[i] = clone[index];
 		}
+	}
+
+	//Esta función es una implementación de: https://doc.rust-lang.org/std/primitive.i32.html#method.rem_euclid,
+	//donde r = euclidian_modulo(a, b) ===> 0 <= r < b.
+	private static int euclidean_modulo(int a, int b) {
+		int result = a%b;
+		if (result < 0) result += b;
+		return result;
 	}
 
 	public static void main(String[] args) {
