@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.function.LongToIntFunction;
 
 class DoubleLinkedList<T> implements TDAList<T> {
 
@@ -19,7 +20,7 @@ class DoubleLinkedList<T> implements TDAList<T> {
 
     public static void main(String[] args) {
         DoubleLinkedList<Integer> lista = new DoubleLinkedList<Integer>();
-        lista.push(99); lista.push(89);
+        lista.push(99); lista.push(89); lista.revert();
         System.out.println(lista);
     }
 
@@ -44,10 +45,11 @@ class DoubleLinkedList<T> implements TDAList<T> {
         }
     }
 
+    // Anexa al final de la lista el elemento dado.
     public void push(T elemento) {
         Nodo nuevo = new Nodo(elemento);
 
-        if (this.length++ == 0) {
+        if (this.isEmpty()) {
             this.primero = nuevo;
             this.ultimo = nuevo;
             return;
@@ -59,6 +61,40 @@ class DoubleLinkedList<T> implements TDAList<T> {
         this.ultimo = nuevo;
     }
 
+    //Anexa al inicio de la lista el elemento dado.
+    public void append(T elemento) {
+        Nodo nuevo = new Nodo(elemento);
+
+        if (this.isEmpty()) {
+            this.primero = nuevo;
+            this.ultimo = nuevo;
+            return;
+        }
+
+        nuevo.siguiente = this.primero;
+        this.primero.anterior = nuevo;
+
+        this.primero = nuevo;
+    }
+
+    //Regresa el elemento al inicio de la lista y lo elimina de la misma
+    public T pop() {
+        //Caso lista vacía, se regresa null.
+        if (this.isEmpty()) 
+            return null;
+        T guardado = this.primero.elemento;
+        //Caso lista de un único elemento. Se vacía la lista.
+        if (this.length == 1) {
+            this.clear();
+        } else {
+            primero = primero.siguiente;
+            primero.anterior = null;
+        }
+
+        length--;
+        return guardado;
+    }
+
     @Override
     public Iterator<T> listIterador() {
         return new Iterador(this);
@@ -66,13 +102,21 @@ class DoubleLinkedList<T> implements TDAList<T> {
 
     @Override
     public TDAList<T> cut(boolean side) {
+        // TODO 
         return null;
     }
 
     @Override
     public void revert() {
-        // TODO Auto-generated method stub
+        Iterador iterador = (Iterador)this.listIterador();
+        DoubleLinkedList<T> revertida = new DoubleLinkedList<T>();
+
+        while (iterador.hasNext()) 
+            revertida.append(iterador.next());
         
+        this.primero = revertida.primero;
+        this.ultimo = revertida.ultimo;
+        //Esto desperdicia mucha memoria. Estoy (casi) seguro de que hay un mejor método, pero mi crush me está hablando y no soy bueno asignando prioridades.
     }
 
     @Override
@@ -112,8 +156,10 @@ class DoubleLinkedList<T> implements TDAList<T> {
 
     @Override
     public void add(int i, T e) throws IndexOutOfBoundsException {
-        // TODO Auto-generated method stub
-        
+        if (this.length < i+1 || i < 0) throw new IndexOutOfBoundsException();
+        if (0 == i) {this.append(e); return;}
+        if (this.length == i) {this.push(e); return;}
+        // TODO implementar la anexión por el lado que esté más cercano al índice.
     }
 
     @Override
