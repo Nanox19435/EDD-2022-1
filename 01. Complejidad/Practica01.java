@@ -33,18 +33,25 @@ public class Practica01{
 			if (array1[pointer1] < array2[pointer2]) {
 				result[i] = array1[pointer1];
 				pointer1++;
-				//Si llegamos al final del arreglo, avanzamos el otro apuntador, y de paso añadimos otro elemento al arreglo.
+				//Si llegamos al final del arreglo, recorremos lo que falta del otro arreglo y lo pegamos.
 				if (pointer1 > n) {
-					result[i] = array2[pointer2];
-					pointer2++;
+					while (++i < result.length) {
+						result[i] = array2[pointer2];
+						pointer2++;
+					}
+					break;
 				}
 			} else {
 				//El proceso es homólogo al bloque anterior.
 				result[i] = array2[pointer2];
 				pointer2++;
 				if (pointer2 > m) {
-					result[i] = array1[pointer1];
-					pointer1++;
+					while (++i < result.length) {
+						System.out.println(pointer1);
+						result[i] = array1[pointer1];
+						pointer1++;
+					}
+					break;
 				}
 			} 
 		}
