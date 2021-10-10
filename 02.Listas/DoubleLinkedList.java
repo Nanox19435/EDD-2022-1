@@ -10,40 +10,62 @@ class DoubleLinkedList<T> implements TDAList<T> {
         public T elemento;
         public Nodo anterior;
         public Nodo siguiente;
+
+        public Nodo(T elemento) {
+            this.elemento = elemento;
+        }
     }
 
 
     public static void main(String[] args) {
-        System.out.println("Hola Mundo!");
+        DoubleLinkedList<Integer> lista = new DoubleLinkedList<Integer>();
+        lista.push(99); lista.push(89);
+        System.out.println(lista);
     }
 
-    private class Iterador implements Iterator {
+    private class Iterador implements Iterator<T> {
         private Nodo actual;
 
-        public Iterador(DoubleLinkedList lista) {
+        public Iterador(DoubleLinkedList<T> lista) {
             actual = lista.primero;
         }
 
         @Override
         public T next() {
+            Nodo guardado = this.actual;
             this.actual = actual.siguiente;
 
-            return this.actual.anterior.elemento;
+            return guardado.elemento;
         }
 
         @Override 
         public boolean hasNext() {
-            return actual.siguiente != null;
+            return actual != null;
         }
     }
 
+    public void push(T elemento) {
+        Nodo nuevo = new Nodo(elemento);
+
+        if (this.length++ == 0) {
+            this.primero = nuevo;
+            this.ultimo = nuevo;
+            return;
+        }
+
+        nuevo.anterior = this.ultimo;
+        this.ultimo.siguiente = nuevo;
+
+        this.ultimo = nuevo;
+    }
+
     @Override
-    public Iterator listIterador() {
+    public Iterator<T> listIterador() {
         return new Iterador(this);
     }
 
     @Override
-    public TDAList cut(boolean side) {
+    public TDAList<T> cut(boolean side) {
         return null;
     }
 
@@ -55,8 +77,7 @@ class DoubleLinkedList<T> implements TDAList<T> {
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.length;
     }
 
     @Override
@@ -95,5 +116,14 @@ class DoubleLinkedList<T> implements TDAList<T> {
         
     }
 
-
+    @Override
+    public String toString() {
+        String str = "[";
+        Iterator<T> iterador = this.listIterador();
+        while (iterador.hasNext()) {
+            str += iterador.next() +", ";
+        }
+        str += "]";
+        return str;
+    }
 }
