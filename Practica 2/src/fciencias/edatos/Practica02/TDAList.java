@@ -1,4 +1,6 @@
+package fciencias.edatos.Practica02;
 import java.util.Iterator;
+
 
 /**
 * TDA para listas.
