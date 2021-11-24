@@ -85,14 +85,14 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
         //Si tiene dos hijos.
         if (nodo.izquierdo != null && nodo.derecho != null) {
             Nodo maxmin = nodo.izquierdo;
-            while (maxmin.derecho != null)
+            while (maxmin.derecho != null) {}
         //Si es hoja.
         } else if (nodo.izquierdo == null && nodo.derecho == null) {
             //Desconectar del padre.
-            if (nodo == nodo.padre.izquierdo) {
-                nodo.padre.izquierdo = null;
+            if (nodo == nodo.progenitor.izquierdo) {
+                nodo.progenitor.izquierdo = null;
             } else {
-                nodo.padre.derecho = null;
+                nodo.progenitor.derecho = null;
             }
         //Si tiene un solo hijo (creo)
         } else {
@@ -108,7 +108,48 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
         return nodo.elemento;
     }
 
-    private void delete(Nodo borrar) {}
+    private void delete(Nodo borrar) {
+        if (borrar.izquierdo == null) {
+            if (borrar.derecho == null) {
+                // Caso nodo es una hoja.
+                if (borrar.progenitor.izquierdo == borrar) {
+                    //Nodo es hijo izquierdo de su padre
+                    borrar.progenitor.izquierdo = null;
+                } else {
+                    //Nodo es hijo derecho de su padre
+                    borrar.progenitor.derecho = null;
+                }
+            } else {
+                // Caso nodo tiene un solo hijo: el hijo izquierdo.
+                if (borrar.progenitor.izquierdo == borrar) {
+                    //Nodo es hijo izquierdo de su padre
+                    borrar.progenitor.izquierdo = borrar.izquierdo;
+                } else {
+                    //Nodo es hijo derecho de su padre
+                    borrar.progenitor.derecho = borrar.izquierdo;
+                }
+            }
+        } else {
+            if (borrar.derecho == null) { 
+                // Caso nodo tiene un solo hijo: el hijo derecho.
+                if (borrar.progenitor.izquierdo == borrar) {
+                    //Nodo es hijo izquierdo de su padre
+                    borrar.progenitor.izquierdo = borrar.izquierdo;
+                } else {
+                    //Nodo es hijo derecho de su padre
+                    borrar.progenitor.derecho = borrar.izquierdo;
+                }
+            } else {
+                // Caso nodo tiene dos hijos
+                Nodo maxmin = borrar.izquierdo;
+                while (maxmin.derecho != null) 
+                    maxmin = maxmin.derecho;
+                
+                borrar.elemento = maxmin.elemento;
+                delete(maxmin);
+            }
+        }
+    }
 
     @Override
     public T findMin() {
