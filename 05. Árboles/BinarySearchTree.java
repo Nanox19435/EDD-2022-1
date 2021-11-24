@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearchTree<K, T> {
 
     private class Nodo {
@@ -181,20 +183,53 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
 
     @Override
     public void preorden() {
-        // TODO Auto-generated method stub
-        
+        System.out.print("(");
+        preorden(root);
+        System.out.print(")");
+    }
+
+    private void preorden(Nodo actual) {
+        if (actual == null) return;
+
+        System.out.print("(key: " + actual.clave +", "+ "valor: " + actual.elemento + "), ");
+
+        postorden(actual.izquierdo);
+
+        postorden(actual.derecho);
     }
 
     @Override
     public void inorden() {
-        // TODO Auto-generated method stub
-        
+        System.out.print("(");
+        inorden(root);
+        System.out.print(")");
+    }
+
+    private void inorden(Nodo actual) {
+        if (actual == null) return;
+
+        postorden(actual.izquierdo);
+
+        System.out.print("(key: " + actual.clave +", "+ "valor: " + actual.elemento + "), ");
+
+        postorden(actual.derecho);
     }
 
     @Override
     public void postorden() {
-        // TODO Auto-generated method stub
-        
+        System.out.print("(");
+        postorden(root);
+        System.out.print(")");
+    }
+
+    private void postorden(Nodo actual) {
+        if (actual == null) return;
+
+        postorden(actual.izquierdo);
+
+        postorden(actual.derecho);
+
+        System.out.println("(key: " + actual.clave +", "+ "valor: " + actual.elemento + ")");
     }
 
     @Override
