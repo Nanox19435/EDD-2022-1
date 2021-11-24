@@ -76,9 +76,39 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
 
     @Override
     public T delete(K k) {
-        // TODO Auto-generated method stub
-        return null;
+        Nodo nodo = retrieve(this.root, k);
+        if (nodo == null) 
+            return null;
+        //Esto no es óptimo. probablemente podríamos sacrificar legibilidad por 
+        //velocidad al hacer este tipo de chequeos una sola vez.
+
+        //Si tiene dos hijos.
+        if (nodo.izquierdo != null && nodo.derecho != null) {
+            Nodo maxmin = nodo.izquierdo;
+            while (maxmin.derecho != null)
+        //Si es hoja.
+        } else if (nodo.izquierdo == null && nodo.derecho == null) {
+            //Desconectar del padre.
+            if (nodo == nodo.padre.izquierdo) {
+                nodo.padre.izquierdo = null;
+            } else {
+                nodo.padre.derecho = null;
+            }
+        //Si tiene un solo hijo (creo)
+        } else {
+            if (nodo.izquierdo != null) {
+                nodo.progenitor = nodo.izquierdo;
+            } else {
+                nodo.progenitor = nodo.derecho;
+            }
+        }
+
+
+
+        return nodo.elemento;
     }
+
+    private void delete(Nodo borrar) {}
 
     @Override
     public T findMin() {
