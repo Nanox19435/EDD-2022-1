@@ -35,7 +35,7 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
             return null;
 
         if (k.compareTo(actual.clave) == 0) 
-           return null;
+           return actual;
         
         if (k.compareTo(actual.clave) < 0)
             return retrieve(actual.izquierdo, k);
@@ -81,36 +81,16 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
         Nodo nodo = retrieve(this.root, k);
         if (nodo == null) 
             return null;
-        //Esto no es óptimo. probablemente podríamos sacrificar legibilidad por 
-        //velocidad al hacer este tipo de chequeos una sola vez.
+        
+        T elemento = nodo.elemento;
 
-        //Si tiene dos hijos.
-        if (nodo.izquierdo != null && nodo.derecho != null) {
-            Nodo maxmin = nodo.izquierdo;
-            while (maxmin.derecho != null) {}
-        //Si es hoja.
-        } else if (nodo.izquierdo == null && nodo.derecho == null) {
-            //Desconectar del padre.
-            if (nodo == nodo.progenitor.izquierdo) {
-                nodo.progenitor.izquierdo = null;
-            } else {
-                nodo.progenitor.derecho = null;
-            }
-        //Si tiene un solo hijo (creo)
-        } else {
-            if (nodo.izquierdo != null) {
-                nodo.progenitor = nodo.izquierdo;
-            } else {
-                nodo.progenitor = nodo.derecho;
-            }
-        }
+        delete(nodo);
 
-
-
-        return nodo.elemento;
+        return elemento;
     }
 
     private void delete(Nodo borrar) {
+        //System.out.println(borrar.elemento);
         if (borrar.izquierdo == null) {
             if (borrar.derecho == null) {
                 // Caso nodo es una hoja.
@@ -148,6 +128,8 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
                     maxmin = maxmin.derecho;
                 
                 borrar.elemento = maxmin.elemento;
+                borrar.clave = maxmin.clave;
+
                 delete(maxmin);
             }
         }
@@ -185,7 +167,7 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
     public void preorden() {
         System.out.print("(");
         preorden(root);
-        System.out.print(")");
+        System.out.print(")\n");
     }
 
     private void preorden(Nodo actual) {
@@ -202,7 +184,7 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
     public void inorden() {
         System.out.print("(");
         inorden(root);
-        System.out.print(")");
+        System.out.print(")\n");
     }
 
     private void inorden(Nodo actual) {
@@ -219,7 +201,7 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
     public void postorden() {
         System.out.print("(");
         postorden(root);
-        System.out.print(")");
+        System.out.print(")\n");
     }
 
     private void postorden(Nodo actual) {
@@ -229,12 +211,11 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
 
         postorden(actual.derecho);
 
-        System.out.println("(key: " + actual.clave +", "+ "valor: " + actual.elemento + ")");
+        System.out.print("(key: " + actual.clave +", "+ "valor: " + actual.elemento + ")");
     }
 
     @Override
     public boolean isEmpty() {
         return root == null;
     }
-    
 }
