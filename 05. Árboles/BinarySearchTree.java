@@ -94,7 +94,10 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
         if (borrar.izquierdo == null) {
             if (borrar.derecho == null) {
                 // Caso nodo es una hoja.
-                if (borrar.progenitor.izquierdo == borrar) {
+                if (borrar.progenitor == null) {
+                    //Nodo es la raíz del arbol.
+                    root = null;
+                } else if (borrar.progenitor.izquierdo == borrar) {
                     //Nodo es hijo izquierdo de su padre
                     borrar.progenitor.izquierdo = null;
                 } else {
@@ -103,7 +106,11 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
                 }
             } else {
                 // Caso nodo tiene un solo hijo: el hijo izquierdo.
-                if (borrar.progenitor.izquierdo == borrar) {
+                if (borrar.progenitor == null) {
+                    //Nodo es la raíz del árbol.
+                    root = borrar.izquierdo;
+                    root.progenitor = null;
+                } else if (borrar.progenitor.izquierdo == borrar) {
                     //Nodo es hijo izquierdo de su padre
                     borrar.progenitor.izquierdo = borrar.izquierdo;
                 } else {
@@ -114,7 +121,11 @@ public class BinarySearchTree<K extends Comparable, T> implements TDABinarySearc
         } else {
             if (borrar.derecho == null) { 
                 // Caso nodo tiene un solo hijo: el hijo derecho.
-                if (borrar.progenitor.izquierdo == borrar) {
+                if (borrar.progenitor == null) {
+                    //Nodo es la raíz del árbol.
+                    root = borrar.derecho;
+                    root.progenitor = null;
+                } else if (borrar.progenitor.izquierdo == borrar) {
                     //Nodo es hijo izquierdo de su padre
                     borrar.progenitor.izquierdo = borrar.izquierdo;
                 } else {
